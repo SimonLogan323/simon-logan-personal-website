@@ -1,0 +1,4 @@
+GenAI usage
+
+Initial submission structure and starter HTML/CSS files were created with AI assistance.
+Update this file with any additional prompts, generated content, and edits used while completing the lab.
