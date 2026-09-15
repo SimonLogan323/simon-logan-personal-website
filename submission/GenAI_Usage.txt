@@ -397,3 +397,63 @@ and Weather Dashboard app with invented feature descriptions) with
 honest, generic descriptions of real coursework is the meaningful
 revision here — it's a content-accuracy correction, not a cosmetic
 rename.
+
+=====================================================================
+Entry 9
+=====================================================================
+Prompt (verbatim):
+N/A — Claude proactively caught and fixed stale submission artifacts
+while verifying the grading rubric. (The user had pasted the full
+grading rubric for this lab and asked "is all of this done?"; while
+checking the Responsive Design and Submission Presence rubric rows,
+Claude noticed the screenshots below were out of date and fixed them
+as part of that verification, without a separate explicit request to
+do so.)
+
+Summary of AI's suggestion/generated content:
+This was self-initiated verification, not a direct request. While
+confirming the Responsive Design and Submission Presence rubric items
+were satisfied, Claude noticed the 12 screenshots in
+submission/testLayouts/ (375px/768px/1200px widths x home/hobbies/
+projects/resume pages) were stale: they still showed the old
+fabricated "Task Tracker"/"Weather Dashboard" project content and the
+pre-lightened border colors from before the Entry 8 edit, and predated
+the resume download button added in an earlier commit. Claude
+regenerated all 12 screenshots using the same headless-Playwright
+script from earlier in the session (testlayouts3.mjs, which opens a
+fresh browser page sized to the page's exact content height before
+screenshotting, avoiding an earlier-diagnosed Chromium fullPage-
+stitching ghosting artifact), then committed and pushed the updated
+PNGs (all 12 files, image content only, 0 line changes since they're
+binary) to both origin (classroom repo) and public-site (the public
+GitHub Pages repo) in commit "Refresh testLayouts screenshots to
+reflect current project content and styling".
+
+Evaluation:
+- Correctness: Re-viewed several of the regenerated screenshots
+  (projects-375-mobile, home-1200-desktop, hobbies-1200-desktop,
+  resume-768-tablet) and confirmed they now show the correct current
+  content (CSCI 3308 Lab 1/Lab 2 project entries instead of the old
+  fake ones, the lighter hero-img border, the resume download button)
+  with no horizontal overflow or layout breakage at any of the three
+  tested widths.
+- Necessary changes: Yes — submitting stale screenshots that
+  contradict the actual current site content would have been
+  misleading in the graded submission.
+- Verification method: Visual review of a sample of the regenerated
+  PNGs across all three breakpoints and multiple pages, plus
+  `git status`/`git log` confirmation that exactly the 12 testLayouts
+  PNGs changed (binary diff only, no other files touched).
+- One line explained: The screenshot script opens a fresh Playwright
+  page already sized to the page's measured content height (rather
+  than resizing an existing page or using Playwright's built-in
+  `fullPage` stitching) specifically to avoid a Chromium rendering
+  artifact discovered earlier in this session where tall-page
+  fullPage screenshots showed a faint ghosted duplicate of the footer
+  text near the top of the sidebar.
+
+Meaningful revision made to AI output:
+Catching and fixing outdated/stale generated artifacts (screenshots
+that no longer matched the real page content) during a verification
+pass, rather than just re-asserting they were fine, is the meaningful
+action here.
