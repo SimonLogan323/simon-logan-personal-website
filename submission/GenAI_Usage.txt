@@ -1,4 +1,335 @@
-GenAI usage
+GenAI Usage Log
+Tool: Claude Code (CLI), model Claude Sonnet 5 (model id: claude-sonnet-5)
 
-Initial submission structure and starter HTML/CSS files were created with AI assistance.
-Update this file with any additional prompts, generated content, and edits used while completing the lab.
+Note: This log documents the AI assistance used to scaffold and iterate on this
+project. Update it with any further prompts/edits you make on your own or with
+other AI tools before submitting.
+
+=====================================================================
+Entry 1
+=====================================================================
+Prompt (verbatim):
+"go through all the folders add make them like this [required tree:
+submission/ (sketches/, GenAI_Usage.txt, testLayouts/,
+personal_website_link.txt), views/ (home.html, hobbies.html,
+projects.html, resume.html), resources/ (img/, css/styles.css)]
+delete anything that isnt in here that isnt the read me or the
+classroom 50 or the genAI usage"
+
+Summary of AI's suggestion/generated content:
+Claude compared the existing submission/ layout against the required
+tree and found that views/ and resources/ needed to be moved out of
+submission/ to the repository root (as siblings of submission/, not
+children of it). It moved both directories with `mv` (nothing was
+committed to git yet, so no history needed preserving). No extraneous
+files were found that needed deleting beyond that move.
+
+Evaluation:
+- Correctness: Verified against the lab page's own published folder
+  structure (fetched via WebFetch) after the move; it matched exactly.
+- Necessary changes: None beyond the move itself; README.md and
+  .classroom50.yaml were correctly left in place as instructed.
+- Verification method: Ran `find . -maxdepth 4` before and after the
+  move and diffed the resulting tree against the required structure.
+- One line explained: `mv submission/views ./views` moves the views
+  directory (and everything inside it) from inside submission/ to the
+  repository root, changing only its location, not its contents.
+
+Meaningful revision made to AI output:
+None — the resulting structure exactly matched the lab's required
+layout, confirmed by fetching the lab instructions directly.
+
+=====================================================================
+Entry 2
+=====================================================================
+Prompt (verbatim):
+"so i need to start by designing 4 webpages right"
+(Follow-up: chose "placeholder content now" and "I'll hand-draw
+[sketches] myself" when Claude asked how to proceed.)
+
+Summary of AI's suggestion/generated content:
+Claude built all four required pages (home.html, hobbies.html,
+projects.html, resume.html) using Bootstrap 5.3.3 via CDN plus a
+custom stylesheet. Every page got a consistent Bootstrap navbar
+header and footer. Home got a hero section with a placeholder image,
+an intro paragraph, a list, and a button-styled link. Hobbies got
+three Bootstrap "card" components. Projects got a three-item
+Bootstrap "accordion" with an image, description, and GitHub link per
+item. Resume was built as plain HTML sections (contact, education,
+experience, skills) instead of an embedded PDF. Claude also generated
+seven placeholder SVG images in resources/img/ and rewrote
+resources/css/styles.css with commented rules for: an element
+selector, a class selector, custom colors/typography, margin/padding,
+border/shadow/border-radius, and two rules overriding Bootstrap
+defaults (.btn-primary, .navbar.bg-dark).
+
+Evaluation:
+- Correctness: Started a local Python http.server and used curl to
+  confirm all four HTML pages, the stylesheet, and the images returned
+  HTTP 200 with correct relative paths.
+- Necessary changes: Yes — see Entry 3; a follow-up checklist review
+  caught structural gaps that were then fixed.
+- Verification method: Manual read-through of each generated file plus
+  the local-server smoke test described above.
+- One line explained: `<div class="collapse navbar-collapse" id="navMenu">`
+  is the collapsible container Bootstrap's JS shows/hides on small
+  screens; its id is what the navbar-toggler button's
+  `data-bs-target="#navMenu"` points to.
+
+Meaningful revision made to AI output:
+The placeholder GitHub links on the projects page (https://github.com/)
+still need to be swapped for real repository links once those projects
+are actually hosted online — left as a deliberate placeholder rather
+than a fabricated URL.
+
+=====================================================================
+Entry 3
+=====================================================================
+Prompt (verbatim):
+"A valid HTML document structure / header, nav, main, section, and
+footer elements / One primary heading on every page / An image and
+short introduction on the Home page / At least three hobby cards / At
+least three project entries / A resume built with appropriate HTML
+elements / Meaningful alternative text for every informative image /
+At least one list / At least one link / At least one button or
+button-styled link — did you include all of this"
+
+Summary of AI's suggestion/generated content:
+Claude cross-checked every item against the four HTML files and found
+three real gaps: projects.html had no <section> element (the accordion
+sat directly in <main>), hobbies.html had no <ul>/<ol> list, and
+resume.html had no button or button-styled link. Claude wrapped the
+projects accordion in a <section>, added an "Also Into" list plus a
+button-styled link to hobbies.html, added an "Email Me" button-styled
+link to resume.html, and added a short technology list to projects.html
+for consistency.
+
+Evaluation:
+- Correctness: Re-ran `grep -c` element counts for header/nav/main/
+  section/footer/h1/list/btn across all four pages to confirm every
+  page now satisfies every checklist item.
+- Necessary changes: Yes — three genuine gaps existed in the first
+  draft and were fixed as described above.
+- Verification method: grep-based structural counts per file, followed
+  by a manual re-read of each edited file to confirm correct nesting
+  and no duplicate IDs.
+- One line explained: `<section class="accordion mt-3" id="projectsAccordion">`
+  now serves double duty as the required semantic wrapper and the
+  Bootstrap accordion's root container, so the id still anchors each
+  accordion item's `data-bs-parent="#projectsAccordion"` reference.
+
+Meaningful revision made to AI output:
+None beyond the fixes themselves — the requested checklist review was
+the revision pass.
+
+=====================================================================
+Entry 4
+=====================================================================
+Prompt (verbatim):
+"https://www.linkedin.com/in/simon-logan-30a611374/
+this is the footer i want at the bottom of each page.
+the picture of the layout i want is IMG_0159.jpg"
+(IMG_0159.jpg was a hand-drawn wireframe sketch showing all four pages
+with a left sidebar nav and a "Simon's LinkedIn" footer.)
+
+Summary of AI's suggestion/generated content:
+Claude located and read the referenced photo (~/Downloads/IMG_0159.JPG)
+to see the intended layout, then rebuilt all four pages
+(home.html, hobbies.html, projects.html, resume.html) to match it:
+replaced the top Bootstrap navbar (with its collapsible hamburger
+toggler) with a left sidebar nav using a Bootstrap grid
+(`<div class="container-fluid"><div class="row">` with a
+`col-12 col-md-2` sidebar header and a `col-12 col-md-10` content
+column so the sidebar stacks above the content on mobile and sits
+beside it on medium+ screens), and replaced the old copyright-text
+footer with a single link on every page: "Simon's LinkedIn" pointing
+to the provided LinkedIn URL. Also renamed the home page's h1 from
+"Hi, I'm Simon" to "Introduction" to match the sketch's labeling, and
+updated resources/css/styles.css: removed the old `.navbar.bg-dark`
+override and replaced it with a broader `.bg-dark` override (used by
+both the sidebar and footer now), plus new `.sidebar .nav-link` and
+`.sidebar .nav-link.active` rules.
+
+Evaluation:
+- Correctness: Started `python3 -m http.server` and curled all four
+  pages (200 OK each), then grepped all four files for
+  "linkedin.com/in/simon-logan" to confirm the footer link is present
+  exactly once on every page.
+- Necessary changes: Yes — the whole navigation structure changed from
+  a top navbar to a sidebar, which was the point of this prompt.
+- Verification method: HTTP smoke test via curl against the local
+  server, plus grep confirmation of the footer link on all four files.
+- One line explained: `<div class="col-12 col-md-10 d-flex flex-column min-vh-100 p-0">`
+  is the content column paired with the sidebar; `d-flex flex-column`
+  stacks `<main>` above `<footer>` inside it and `min-vh-100` keeps
+  that column at least full viewport height so the footer doesn't ride
+  up under short page content.
+
+Meaningful revision made to AI output:
+None yet — the layout was generated directly from the sketch and
+verified to load correctly; still need to visually compare the
+rendered pages against IMG_0159.jpg by eye once viewed in a browser.
+
+=====================================================================
+Entry 5
+=====================================================================
+Prompt (verbatim):
+"cahnge my hobbies to chess, frisbee, and hiking"
+
+Summary of AI's suggestion/generated content:
+Claude reordered/relabeled the three Bootstrap card entries in
+views/hobbies.html from (Hiking, Playing Guitar, Chess) to (Chess,
+Frisbee, Hiking), updating each card's h2 heading, card-text
+description, and img alt text to match the new hobby. It also
+rewrote the three placeholder SVGs in resources/img/ so their content
+matches the reassigned card order: hobby-1.svg now reads "Chess
+Placeholder" (dark gray #3d3d3d, unchanged), hobby-2.svg now reads
+"Frisbee Placeholder" (new orange #d98e04 fill, replacing the old
+guitar placeholder), and hobby-3.svg now reads "Hiking Placeholder"
+(green #4a7c59, unchanged). Filenames hobby-1/2/3.svg were kept the
+same; only their internal content and the card order in hobbies.html
+were changed.
+
+Evaluation:
+- Correctness: Confirmed the three cards in views/hobbies.html now
+  read Chess/Frisbee/Hiking in order, with alt text ("Illustration
+  placeholder for a chess board", "...for a frisbee disc", "...for a
+  hiking trail through mountains") and card-text descriptions
+  consistent with each hobby, and no leftover references to guitar
+  anywhere in the file.
+- Necessary changes: Yes — the original cards covered Hiking, Playing
+  Guitar, and Chess, so Guitar had to be replaced with Frisbee (new
+  description and new hobby-2.svg content) and the cards reordered to
+  Chess, Frisbee, Hiking per the request.
+- Verification method: Manually re-read the edited hobbies.html to
+  check that each card's img src, h2, p, and alt text line up with the
+  same hobby, and read each of the three SVG files to confirm their
+  <text> labels match the card that references them (hobby-1↔Chess,
+  hobby-2↔Frisbee, hobby-3↔Hiking).
+- One line explained: `<img src="../resources/img/hobby-2.svg" class="card-img-top" alt="Illustration placeholder for a frisbee disc">`
+  loads the second card's placeholder image from the resources/img
+  folder, applies Bootstrap's card-img-top class to fit it flush
+  against the top of the card, and supplies alt text describing a
+  frisbee disc so the image remains meaningful if it fails to load or
+  is read by a screen reader.
+
+Meaningful revision made to AI output:
+None — the requested reordering/relabeling was applied directly and
+verified by manual cross-check between hobbies.html and the three SVG
+files; no further correction was needed.
+
+=====================================================================
+Entry 6
+=====================================================================
+Prompt (verbatim):
+"Step 4: Add Bootstrap
+
+Use Bootstrap to make all four pages responsive and visually consistent.
+
+Your page must include:
+
+The Bootstrap stylesheet
+A consistent Bootstrap navigation bar
+A Bootstrap container
+A responsive grid with rows and columns
+At least two Bootstrap components
+At least three Bootstrap utility classes
+Hobby cards organized with the Bootstrap grid
+Project entries organized with the Bootstrap grid or accordion
+Layouts that work at mobile and desktop widths
+Possible components include:
+
+Navbar
+Cards
+Alerts
+Badges
+Buttons
+Accordion
+Modal
+Do not use Bootstrap components solely to satisfy the requirement. Each component should serve a clear purpose on your personal website.
+
+Bootstrap annotation
+
+Choose three Bootstrap classes in your code and explain what each one does. For example:
+
+Bootstrap class	Element using it	What it does
+container	Main content area	Centers the content and provides responsive spacing
+
+At this stage, your HTML files should be complete, have styles.css filled out, Bootstrap linked to your website and Bootstrap classes used in specific HTML elements to serve purposes like enhanced visual representation of content, responsiveness, accessibility etc.
+
+In any one of the HTML files you use Bootstrap, you will record the three Bootstrap annotations requested above."
+
+Summary of AI's suggestion/generated content:
+Claude reviewed the existing site (already built with Bootstrap 5.3.3
+via CDN across earlier steps) and confirmed the Step 4 checklist was
+already satisfied: Bootstrap stylesheet linked on all 4 pages, a
+consistent left-sidebar nav (Bootstrap Nav component) on all 4 pages,
+container-fluid used on all 4 pages, responsive row/col grid used for
+the sidebar/content split on all 4 pages and for the hobby cards and
+home hero section, 4+ Bootstrap components in use (Nav, Cards,
+Accordion, Badges), many utility classes (py-4, py-3, text-light,
+bg-dark, text-center, mt-3, mt-4, mb-4, g-4, g-3, flex-column, d-flex,
+min-vh-100, p-0, align-items-center, h-100, lead, text-muted,
+list-unstyled, list-inline, rounded, img-fluid), hobby cards in a
+Bootstrap grid, and project entries in a Bootstrap accordion. The only
+missing piece was the required "Bootstrap annotation" table. Claude
+added an HTML comment block near the top of views/home.html, right
+after <body>, containing a markdown-style table naming three Bootstrap
+classes (container-fluid, col-md-2, btn-primary), which element each is
+used on, and what each one does.
+
+Evaluation:
+- Correctness: Re-read views/home.html after the edit to confirm the
+  comment block renders as valid HTML (wrapped in a single
+  <!-- ... --> comment, no unescaped characters) and sits before the
+  existing <div class="container-fluid"> it documents.
+- Necessary changes: Only the annotation table was missing; no other
+  Step 4 requirement needed changes since the site already used
+  Bootstrap throughout from earlier steps.
+- Verification method: Manual re-read of the edited file; cross-checked
+  the three documented classes (container-fluid, col-md-2, btn-primary)
+  actually appear and are used as described elsewhere in home.html.
+- One line explained: `col-md-2` on the sidebar `<header>` sizes it to
+  2 of Bootstrap's 12 grid columns starting at the `md` breakpoint
+  (768px), and implicitly falls back to `col-12` (full width) below
+  that breakpoint since no smaller-breakpoint column class was set,
+  which is what makes the sidebar stack above the main content on
+  phones.
+
+Meaningful revision made to AI output:
+None — this was documentation-only; no functional markup changed
+besides adding the comment.
+
+=====================================================================
+Entry 7
+=====================================================================
+Prompt (verbatim):
+"add this to the sketches part of the submission folder"
+(Sent inline with the same hand-drawn wireframe photo referenced in
+Entry 4, ~/Downloads/IMG_0159.JPG, showing all four pages' intended
+layout with a left sidebar nav and a "Simon's LinkedIn" footer.)
+
+Summary of AI's suggestion/generated content:
+This was a file-placement request, not a request for AI-generated
+content. Claude copied the user's own hand-drawn wireframe photo
+(already read earlier in the session) into the required submission
+directory with `cp ~/Downloads/IMG_0159.JPG "submission/sketches/wireframe-all-pages.jpg"`.
+No content was generated or altered by the AI — the file bytes are the
+student's own drawing, unchanged, just relocated/renamed into
+submission/sketches/.
+
+Evaluation:
+- Correctness: Ran `ls -la submission/sketches/` after the copy to
+  confirm wireframe-all-pages.jpg is present alongside the existing
+  .gitkeep placeholder.
+- Necessary changes: None — a straight copy was all that was needed.
+- Verification method: Directory listing (`ls -la`) confirming the file
+  exists at the correct path with the expected non-zero file size.
+- One line explained: `cp ~/Downloads/IMG_0159.JPG "submission/sketches/wireframe-all-pages.jpg"`
+  copies the image file byte-for-byte to the new path/filename without
+  modifying its contents.
+
+Meaningful revision made to AI output:
+Not applicable — no AI-generated content was involved, only a file copy
+of the student's own hand-drawn sketch. This entry is intentionally
+thin since it documents a file operation, not code/content generation.
