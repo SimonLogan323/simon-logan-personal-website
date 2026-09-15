@@ -333,3 +333,67 @@ Meaningful revision made to AI output:
 Not applicable — no AI-generated content was involved, only a file copy
 of the student's own hand-drawn sketch. This entry is intentionally
 thin since it documents a file operation, not code/content generation.
+
+=====================================================================
+Entry 8
+=====================================================================
+Prompt (verbatim):
+"i want the colors of the borders to be lighter. I also dont know what
+i should add for hte projects"
+(Follow-up clarification when asked what to use for the projects
+content: "Just this website + other CSCI 3308 labs", and specifically
+"Just use Lab 1 and Lab 2 generically" — i.e. write honest,
+non-specific descriptions of CSCI 3308 Lab 1 and Lab 2 rather than
+inventing fake project details.)
+
+Summary of AI's suggestion/generated content:
+Claude made two sets of changes. First, in resources/css/styles.css it
+added a new `--brand-light: #9fc9e8` CSS variable, changed
+`.hero-img`'s border color from `var(--brand-color)` (dark blue
+#145da0) to `var(--brand-light)`, and lightened `.card`'s border from
+`#ddd` to `#eee`. Second, in views/projects.html it replaced the three
+fabricated placeholder project entries (Task Tracker, Weather
+Dashboard, "This Portfolio Site") with honest ones: "CSCI 3308 Lab 1"
+(generic description of setting up a dev environment and Git/GitHub
+workflow), "CSCI 3308 Lab 2" (generic description of building on Lab
+1's command-line/collaboration skills), and "CSCI 3308 Lab 3: This
+Portfolio Site" (the real, accurate description of this website, left
+unchanged). The GitHub links for all three remain the honest
+`https://github.com/` placeholder since the actual repo URLs for Lab 1
+and Lab 2 aren't known to Claude — the user still needs to fill those
+in. Claude also relabeled the placeholder graphic text inside
+resources/img/project-1.svg and project-2.svg from "Task Tracker
+Placeholder"/"Weather Dashboard Placeholder" to "CSCI 3308 Lab 1
+Placeholder"/"CSCI 3308 Lab 2 Placeholder" to match the new content;
+project-3.svg (Portfolio Site) was left unchanged.
+
+Evaluation:
+- Correctness: Started a local http.server and curled projects.html
+  and home.html to confirm both still return HTTP 200 after the edits.
+  Visually re-read the edited files to confirm the new project
+  descriptions match what the user actually asked for, with no
+  fabricated technical claims.
+- Necessary changes: Yes — the previous project entries were
+  invented/fictional (a Task Tracker and Weather Dashboard that don't
+  exist), which the user caught by asking what they should actually
+  put there; replacing them with honest, generically-worded real
+  coursework was the correct fix rather than inventing more fake
+  projects.
+- Verification method: HTTP 200 smoke test via curl against the local
+  server, plus manual review of the new HTML content for accuracy
+  against what the user confirmed.
+- One line explained: `<button class="accordion-button collapsed"
+  type="button" data-bs-toggle="collapse" data-bs-target="#project2">`
+  is the clickable header for the second accordion item;
+  `data-bs-target="#project2"` tells Bootstrap's JS which collapsible
+  panel (the element with `id="project2"`) to show or hide when this
+  button is clicked, and the `collapsed` class keeps it visually closed
+  by default (only the first accordion item starts expanded, via the
+  `show` class on its panel).
+
+Meaningful revision made to AI output:
+Replacing fabricated, specific project claims (a fake Task Tracker app
+and Weather Dashboard app with invented feature descriptions) with
+honest, generic descriptions of real coursework is the meaningful
+revision here — it's a content-accuracy correction, not a cosmetic
+rename.
