@@ -457,3 +457,80 @@ Catching and fixing outdated/stale generated artifacts (screenshots
 that no longer matched the real page content) during a verification
 pass, rather than just re-asserting they were fine, is the meaningful
 action here.
+
+=====================================================================
+Entry 10
+=====================================================================
+Prompt (verbatim):
+"i want the design to look way more visually appealing everything looks
+way to bland"
+(Follow-up clarification: when Claude asked which visual direction to
+take — offering "Modern & Minimal", "Bold & Colorful", or "Warm &
+Professional" as three named style directions with previews — the user
+chose "Warm & Professional" (serif headings, warm off-white background,
+navy + gold/amber accent, editorial/elegant feel).)
+
+Summary of AI's suggestion/generated content:
+Claude did a full ground-up visual restyle guided by the chosen "Warm &
+Professional" direction. In resources/css/styles.css it replaced the old
+blue palette (--brand-color/--brand-dark/--brand-light) with a
+navy/gold/cream palette (--navy: #142840, --navy-dark: #0c1b2e, --gold:
+#c9a227, --gold-dark: #9c7d1a, --cream: #faf6ee, --card-bg: #fffdf8,
+--text: #2e2a24), set the body background to the cream color and body
+font to 'Inter', set h1/h2/h3 to the serif 'Playfair Display' in navy
+with letter-spacing, added a general `a` link color rule, restyled
+.hero-img (gold border, deeper shadow, hover lift), restyled .card
+(cream background, gold top-border accent, hover lift + shadow
+transition), and restyled .sidebar to a navy gradient with a gold
+left-border accent for hover/active states. It re-pointed the
+Bootstrap-default overrides so .btn-primary/.btn-outline-primary use
+gold instead of blue and .bg-dark resolves to navy, and added two new
+overrides for .accordion-button:not(.collapsed) (warm gold-tinted active
+background instead of Bootstrap's default light blue) and
+.badge.bg-secondary (navy instead of Bootstrap's default gray). Claude
+added Google Fonts <link> tags (Inter + Playfair Display, with
+preconnect) to the <head> of all four HTML pages. It replaced the flat
+"Home Hero Placeholder" SVG with a real CC-BY-SA-4.0 licensed "Flatirons
+Sunrise" photo from Wikimedia Commons, compressed/resized with `sips`,
+saved as resources/img/home-hero.jpg, deleted the old home-hero.svg, and
+updated views/home.html's img src/alt text. It also restyled the three
+project placeholder SVGs (project-1/2/3.svg) from mismatched flat
+rainbow colors to a consistent navy-gradient-with-gold-frame design with
+a serif label, keeping them honestly labeled as placeholders. Finally,
+it regenerated all 12 submission/testLayouts screenshots (375/768/1200px
+x 4 pages) using the same headless-Playwright fresh-page-per-shot method
+established earlier in the session.
+
+Evaluation:
+- Correctness: Rendered all four pages via a headless Playwright browser
+  after the changes and visually reviewed full-page screenshots of each
+  (home, hobbies, projects, resume) at desktop width, confirming the new
+  palette, fonts, hero photo, card hover styling, and accordion/badge
+  recoloring all rendered as intended with no visual regressions. Also
+  reviewed the regenerated 375px mobile screenshot for home.html
+  specifically to confirm no horizontal overflow or text-wrapping
+  problems introduced by the new serif font at narrow widths.
+- Necessary changes: The entire visual layer needed reworking per the
+  user's explicit "way too bland" feedback — this wasn't a targeted bug
+  fix but a deliberate ground-up restyle guided by the user's chosen
+  direction.
+- Verification method: Visual review of rendered screenshots at 1280px
+  (desktop) and 375px (mobile) across all four pages; confirmed via
+  `git status`/`git diff --stat` that only the intended CSS/HTML/image
+  files changed before committing (resources/css/styles.css, the five
+  image files, and the 12 regenerated testLayouts PNGs).
+- One line explained: `.card:hover { transform: translateY(-6px);
+  box-shadow: 0 1rem 1.75rem rgba(20, 40, 64, 0.15); }` lifts a
+  hobby/project card 6 pixels upward and deepens its shadow when the
+  mouse hovers over it, using a CSS transition (declared on the base
+  .card rule) to animate both changes smoothly instead of snapping
+  instantly.
+
+Meaningful revision made to AI output:
+Beyond just recoloring variables, the meaningful revision was replacing
+the flat "Home Hero Placeholder" SVG box — the most visibly
+unfinished/bland element on the whole site — with a real, properly
+licensed photograph, and redesigning the project placeholder graphics to
+match the new palette instead of leaving them as visually clashing
+leftover colors from the old theme. This is a substantive content/asset
+change, not just a CSS color swap.
