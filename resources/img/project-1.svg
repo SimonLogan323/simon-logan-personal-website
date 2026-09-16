@@ -1,4 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="250" viewBox="0 0 400 250">
-  <rect width="400" height="250" fill="#5b3a8e"/>
-  <text x="200" y="125" font-family="Arial, sans-serif" font-size="18" fill="#ffffff" text-anchor="middle" dominant-baseline="middle">CSCI 3308 Lab 1 Placeholder</text>
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1c3355"/>
+      <stop offset="100%" stop-color="#0d1b2e"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="250" fill="url(#g1)"/>
+  <rect x="12" y="12" width="376" height="226" fill="none" stroke="#c9a227" stroke-width="1.5"/>
+  <text x="200" y="125" font-family="Georgia, 'Times New Roman', serif" font-size="19" fill="#e9d9a8" text-anchor="middle" dominant-baseline="middle">CSCI 3308 &#8226; Lab 1</text>
 </svg>
